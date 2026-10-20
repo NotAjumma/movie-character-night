@@ -1,0 +1,10 @@
+{
+  "name": "movie-character-night",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "dev": "node scripts/dev.mjs"
+  }
+}
