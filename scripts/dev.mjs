@@ -22,7 +22,7 @@ http.createServer(async (req, res) => {
       const request = new Request(url, { method: req.method, headers: req.headers, body: hasBody ? Readable.toWeb(req) : undefined, duplex: 'half' });
       const response = await handler(request);
       res.writeHead(response.status, Object.fromEntries(response.headers));
-      res.end(Buffer.from(await response.arrayBuffer()));
+      if (response.body) Readable.fromWeb(response.body).pipe(res); else res.end();
       return;
     }
     const path = url.pathname === '/' ? '/index.html' : url.pathname;

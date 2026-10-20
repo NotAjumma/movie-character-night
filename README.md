@@ -43,8 +43,11 @@ Upload a photo and a video, then open the gallery. Event text can be set with `E
 5. Make a QR code for that URL.
 
 ## Admin
-- **Remove from gallery:** trash the file in the Drive folder. The gallery updates within about 10 seconds.
+- **Remove from gallery:** trash the file in the Drive folder. The gallery updates within about 10 seconds (a guest who already has the viewer open may still play it for up to 5 minutes, and cached thumbnails stay on Vercel's CDN, but nothing links to them any more).
 - **Who uploaded what:** each file's Drive description says `Uploaded by <name>`.
+- **`*.thumb.jpg` files:** preview frames captured by the guest's browser for each video, so the gallery has a thumbnail right away. They never show in the gallery themselves; trash one together with its video.
+- **Thumbnails:** served through `/api/thumb` with the app's own Drive access and cached by Vercel. Public `drive.google.com/thumbnail` links get rate limited by Google (HTTP 429) and show up blank.
+- **Video playback:** videos play in the phone's native player, streamed from Drive in 4 MB ranges through `/api/media`. If a browser can't decode a file (e.g. an iPhone HEVC `.MOV` on some Android phones), the gallery falls back to Google Drive's player, which shows a "still processing" screen until Drive has converted the video.
 - **Close uploads after the event:** delete `GOOGLE_REFRESH_TOKEN` in Vercel, or pause the project.
 - **File size limit:** `MAX_FILE_MB` (default 1024).
 
